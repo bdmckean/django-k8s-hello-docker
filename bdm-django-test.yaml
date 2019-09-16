@@ -15,8 +15,16 @@ spec:
     spec:
       containers:
       - name: django-k8s-starter-bdm-web
-        image: gcr.io/adept-cosine-156702/bdm-django:v1
+        image: localhost:5000/bdm-test:v3
         imagePullPolicy: Always
-        command: ["python", "/var/www/django/manage.py", "runserver"]
         ports:
         - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10           
+        imagePullPolicy: IfNotPresent
+
+

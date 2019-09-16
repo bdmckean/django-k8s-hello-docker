@@ -3,7 +3,7 @@
 Docker files for django project
 
 ## commands for bulding image, pushing to google cloud and executing
-docker build -t gcr.io/adept-cosine-156702/bdm-django:v1 .
+docker build --build-arg id_rsa --build-arg id_rsa_pub -t  gcr.io/adept-cosine-156702/bdm-django:v1 .
 docker push gcr.io/adept-cosine-156702/bdm-django:v1
 kubectl apply -f  bdm-django-test.yaml
 kubectl get pods

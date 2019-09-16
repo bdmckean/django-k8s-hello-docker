@@ -1,5 +1,6 @@
 # [START docker]
 FROM gcr.io/google_appengine/python
+RUN apt-get update
 RUN apt-get clean all
 RUN apt-get update
 RUN apt-get -y dist-upgrade
@@ -7,6 +8,7 @@ RUN apt-get install -y git
 RUN apt-get install -y ssh-client
 RUN apt-get install -y vim
 RUN apt-get install -y tmux
+RUN apt-get install -y curl
 ARG id_rsa
 ARG id_rsa_pub
 
@@ -31,11 +33,15 @@ RUN mkdir /var/log/django
 
 #Install project virutalenv
 RUN virtualenv -p python3 /var/www/django/env
-ENV PATH /var/www/django/env/bin:$PATH
+ENV PATH=/var/www/django/env/bin:$PATH
 
-RUN pip install --upgrade pip && pip install -r /var/www/django/requirements.txt
+RUN pip install -r /var/www/django/requirements.txt
 
 ENV NODB 1
 
+ENV PROJECT_ROOT /var/www/django
+WORKDIR $PROJECT_ROOT
+
 #Start server
-CMD python /var/www/django/manage.py runserver
+CMD python manage.py runserver 0.0.0.0:8000
+
